@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-//@CrossOrigin("*")
 public class SongController {
 
     @Autowired
@@ -57,6 +56,11 @@ public class SongController {
 
     @GetMapping("/artist/songs")
     public ResponseEntity<List<SongDto>> getAllSongs() {
+        return ResponseEntity.ok(songService.getAllSong());
+    }
+
+    @GetMapping("/all/songs")
+    public ResponseEntity<List<SongDto>> getAllSong() {
         return ResponseEntity.ok(songService.getAllSong());
     }
 

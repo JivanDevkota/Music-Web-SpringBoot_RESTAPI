@@ -56,6 +56,7 @@ public class Song {
         songDto.setSongId(this.id);
         songDto.setTitle(this.title);
         songDto.setArtistId(artist.getId());
+        songDto.setArtistName(artist.getUser().getUsername());
         if (album != null) {
             songDto.setAlbumId(album.getId());
             songDto.setAlbumName(album.getTitle());
@@ -64,7 +65,6 @@ public class Song {
            songDto.setGenreId(genre.getId());
            songDto.setGenreName(genre.getTitle());
        }
-
         songDto.setDuration(this.duration);
         songDto.setFilePath(this.filePath);
         songDto.setSongImgPath(this.songImgPath);

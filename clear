@@ -1,0 +1,72 @@
+warning: LF will be replaced by CRLF in src/main/resources/application.properties.
+The file will have its original line endings in your working directory
+[1mdiff --git a/src/main/java/com/nsu/mymusic/config/SecurityConfig.java b/src/main/java/com/nsu/mymusic/config/SecurityConfig.java[m
+[1mindex 9d33023..2aac86d 100644[m
+[1m--- a/src/main/java/com/nsu/mymusic/config/SecurityConfig.java[m
+[1m+++ b/src/main/java/com/nsu/mymusic/config/SecurityConfig.java[m
+[36m@@ -41,10 +41,10 @@[m [mpublic class SecurityConfig {[m
+                .csrf(AbstractHttpConfigurer::disable)[m
+                .authorizeHttpRequests(auth->auth[m
+                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()[m
+[31m-                       .requestMatchers("api/get/**","/error","/uploads/**","api/authenticate").permitAll()[m
+[31m-                       .requestMatchers("api/user").hasRole("USER")[m
+[31m-                       .requestMatchers("/api/artist/**").hasRole("ADMIN")[m
+[31m-                       .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")[m
+[32m+[m[32m                       .requestMatchers("/api/get/**","/error","/uploads/**","/api/authenticate").permitAll()[m
+[32m+[m[32m                       .requestMatchers("/api/user/**","/api/all/songs").hasRole("USER")[m
+[32m+[m[32m                       .requestMatchers("/api/artist/**").hasRole("ARTIST")[m
+[32m+[m[32m                       .requestMatchers("/user/**").hasAnyRole("USER", "ARTIST")[m
+                        .anyRequest().authenticated())[m
+                .sessionManagement(sess->sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))[m
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)[m
+[1mdiff --git a/src/main/java/com/nsu/mymusic/controller/GenreController.java b/src/main/java/com/nsu/mymusic/controller/GenreController.java[m
+[1mindex 41d0403..805446a 100644[m
+[1m--- a/src/main/java/com/nsu/mymusic/controller/GenreController.java[m
+[1m+++ b/src/main/java/com/nsu/mymusic/controller/GenreController.java[m
+[36m@@ -21,7 +21,6 @@[m [mpublic class GenreController {[m
+     @GetMapping("/get/all/genre")[m
+     public ResponseEntity<?>getAllGenre(){[m
+         List<Genre> genres = genreRepository.findAll();[m
+[31m-[m
+         return ResponseEntity.ok(genres);[m
+     }[m
+ [m
+[1mdiff --git a/src/main/java/com/nsu/mymusic/controller/LikedSongController.java b/src/main/java/com/nsu/mymusic/controller/LikedSongController.java[m
+[1mindex 2d699ce..960be6d 100644[m
+[1m--- a/src/main/java/com/nsu/mymusic/controller/LikedSongController.java[m
+[1m+++ b/src/main/java/com/nsu/mymusic/controller/LikedSongController.java[m
+[36m@@ -1,7 +1,6 @@[m
+ package com.nsu.mymusic.controller;[m
+ [m
+ import com.nsu.mymusic.entity.Song;[m
+[31m-import com.nsu.mymusic.repository.LikedSongRepository;[m
+ import com.nsu.mymusic.service.userServices.LikedSongService;[m
+ import org.springframework.beans.factory.annotation.Autowired;[m
+ import org.springframework.web.bind.annotation.*;[m
+[36m@@ -15,20 +14,20 @@[m [mpublic class LikedSongController {[m
+     @Autowired[m
+     private LikedSongService likedSongService;[m
+ [m
+[31m-    @PostMapping("/song/liked")[m
+[32m+[m[32m    @PostMapping("/user/liked/song")[m
+     public String likeSong(@RequestParam Long userId,@RequestParam Long songId){[m
+         likedSongService.likeSong(userId, songId);[m
+         return "Song liked";[m
+     }[m
+ [m
+[31m-    @DeleteMapping("/song/unlike")[m
+[31m-    public String unlikeSong(Long userId, Long songId){[m
+[32m+[m[32m    @DeleteMapping("/user/song/unlike")[m
+[32m+[m[32m    public String unlikeSong(@RequestParam Long userId,@RequestParam Long songId){[m
+         likedSongService.unlikeSong(userId, songId);[m
+         return "Song unliked";[m
+     }[m
+ [m
+[31m-    @GetMapping[m
+[31m-    public List<Song>getLikedSongs(Long userId){[m
+[32m+[m[32m    @GetMapping("/user/{userId}/liked/songs")[m
+[32m+[m[32m    public List<Song>getLikedSongs(@PathVariable Long userId){[m
+         return likedSongService.getLikedSongs(userId);[m
+     }[m
+ }[m
+[1mdiff --git a/src/main/java/com/nsu/mymu

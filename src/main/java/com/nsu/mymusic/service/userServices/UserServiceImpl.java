@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
 
     @PostConstruct
     public void addUser() {
-
         //check if role exist or not if not create
         Role role = roleRepository.findByRoleName("ROLE_USER")
                 .orElseGet(() -> {

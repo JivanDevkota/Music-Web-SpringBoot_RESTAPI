@@ -21,7 +21,6 @@ public class GenreController {
     @GetMapping("/get/all/genre")
     public ResponseEntity<?>getAllGenre(){
         List<Genre> genres = genreRepository.findAll();
-
         return ResponseEntity.ok(genres);
     }
 

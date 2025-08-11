@@ -1,7 +1,6 @@
 package com.nsu.mymusic.controller;
 
 import com.nsu.mymusic.entity.Song;
-import com.nsu.mymusic.repository.LikedSongRepository;
 import com.nsu.mymusic.service.userServices.LikedSongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,20 +14,21 @@ public class LikedSongController {
     @Autowired
     private LikedSongService likedSongService;
 
-    @PostMapping("/song/liked")
+    @PostMapping("/user/liked/song")
     public String likeSong(@RequestParam Long userId,@RequestParam Long songId){
         likedSongService.likeSong(userId, songId);
         return "Song liked";
     }
 
-    @DeleteMapping("/song/unlike")
-    public String unlikeSong(Long userId, Long songId){
+    @DeleteMapping("/user/song/unlike")
+    public String unlikeSong(@RequestParam Long userId,@RequestParam Long songId){
         likedSongService.unlikeSong(userId, songId);
         return "Song unliked";
     }
 
-    @GetMapping
-    public List<Song>getLikedSongs(Long userId){
+    @GetMapping("/user/{userId}/liked/songs")
+    public List<Song>getLikedSongs(@PathVariable Long userId){
         return likedSongService.getLikedSongs(userId);
     }
 }
+

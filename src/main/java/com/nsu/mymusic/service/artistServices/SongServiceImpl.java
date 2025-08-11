@@ -51,14 +51,12 @@ public class SongServiceImpl implements SongService {
         Genre genre = genreRepository.findById(songDto.getGenreId())
                 .orElseThrow(() -> new RuntimeException("Genre not found"));
 
-
         String songPath = fileStorageUtil.saveFile(songFile, "song");
         String imgPath=fileStorageUtil.saveFile(imageFile,"image");
         Song song = new Song();
         song.setTitle(songDto.getTitle());
         song.setDuration(songDto.getDuration());
         song.setGenre(genre);
-
         song.setArtist(artist);
         song.setAlbum(album);
         song.setFilePath(songPath);

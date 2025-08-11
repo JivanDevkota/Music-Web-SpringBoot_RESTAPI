@@ -10,7 +10,8 @@ import java.sql.Timestamp;
         @UniqueConstraint(columnNames = {"user_id", "song_id"})
 })
 @Data
-public class LikedSong {
+public class
+LikedSong {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
